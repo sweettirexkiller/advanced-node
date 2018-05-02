@@ -18,6 +18,7 @@
   "homepage": "https://github.com/sweettirexkiller/advanced-node#readme",
   "dependencies": {
     "cluster": "^0.7.7",
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "webworker-threads": "^0.7.13"
   }
 }
