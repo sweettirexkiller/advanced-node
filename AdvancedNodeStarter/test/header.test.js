@@ -21,22 +21,9 @@ test('Clicking login launches Google oauth flow', async () => {
     expect(url).toMatch(/accounts\.google\.com/);
 });
 
-test.only('When signed in, shows logout button', async ()=>{
+test('When signed in, shows logout button', async ()=>{
     const id = '5ae9c7661b9ab7460938f2e3';
-    const Buffer = require('safe-buffer').Buffer;
-    const sessionObject = {
-        passport: {
-            user: id
-        }
-    };
 
-    const sessionString = Buffer.from(JSON.stringify(sessionObject)).toString('base64');
-
-    const Keygrip = require('keygrip');
-
-    const keys = require('../config/keys');
-    const keygrip = new Keygrip([keys.cookieKey]);
-    const sig = keygrip.sign('session='+sessionString);
 
     await page.setCookie({name: 'session', value: sessionString});
     await page.setCookie({name: 'session.sig', value: sig});
