@@ -16,7 +16,6 @@ test('The header has correct text', async () => {
 });
 
 
-
 test('Clicking login launches Google oauth flow', async () => {
     await page.click('.right a');
 
