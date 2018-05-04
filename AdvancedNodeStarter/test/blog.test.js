@@ -60,34 +60,26 @@ describe('When logged in', async () => {
 });
 
 describe('User in not logged in', async () => {
-    test('User cannot create blog posts', async () => {
-       const result = await page.evaluate(() => {
 
-            return fetch('/api/blogs', {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify({title: 'My Other Title', content: 'My other Content'})
-            }).then(res => res.json());
+    const actions = [
+        {
+            method: 'get',
+            path: '/api/blogs'
+        },
+        {
+            method: 'post',
+            path: '/api/blogs',
+            data: {
+                title: 'T',
+                content: 'C'
+            }
+        }
+    ];
 
-        });
-       expect(result).toEqual({error: 'You must log in!'});
-    });
-
-    test('User cannot get a list of blog posts', async () => {
-        const result = await page.evaluate(() => {
-
-            return fetch('/api/blogs', {
-                method: 'GET',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-type': 'application/json'
-                }
-            }).then(res => res.json());
-
-        });
-        expect(result).toEqual({error: 'You must log in!'});
+    test('Blog related actions are prohibited', async () => {
+        const results = await page.execRequests(actions);
+        for (let result of results) {
+            expect(result).toEqual({error: 'You must log in!'})
+        }
     });
 });
