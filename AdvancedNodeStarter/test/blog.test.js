@@ -24,8 +24,8 @@ describe('When logged in', async () => {
 
     describe('And using valid inputs', async () => {
         beforeEach(async () => {
-            await page.type('.title input','My Title');
-            await page.type('.content input','My Content');
+            await page.type('.title input', 'My Title');
+            await page.type('.content input', 'My Content');
             await page.click('form button');
         });
         test('Submitting takes user to review screen', async () => {
@@ -40,8 +40,6 @@ describe('When logged in', async () => {
 
             expect(title).toEqual('My Title');
             expect(content).toEqual('My Content');
-
-
         });
 
     });
@@ -58,5 +56,23 @@ describe('When logged in', async () => {
             expect(contentError).toEqual('You must provide a value');
         });
 
+    });
+});
+
+describe('User in not logged in', async () => {
+    test('User cannot create blog posts', async () => {
+       const result = await page.evaluate(() => {
+
+            return fetch('/api/blogs', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({title: 'My Other Title', content: 'My other Content'})
+            }).then(res => res.json());
+
+        });
+       expect(result).toEqual({error: 'You must log in!'});
     });
 });
